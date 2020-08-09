@@ -1,0 +1,150 @@
+{% extends 'news/layout.html' %}
+{% load static %}
+
+    {% block search %}
+    <div id="sidebar" class="sidebar">
+        <a href="#" class="boton-cerrar" onclick="ocultar()">×</a>
+        <ul class="menu">
+            {% for category in categories %}
+            <li class="nav-item">
+                <a class="category nav-link" href="{% url 'category' category=category.id %}">{{category.name}}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        <ul class="search navbar-nav mr-auto">
+            <form class="form-inline my-2 my-lg-0" method="post">
+                {% csrf_token %}
+                {{form.item}}
+                <button class="btn btn-outline-dark my-2 my-sm-1" type="submit"><span class="fa fa-search" style="margin-right: 4px;"></span>Search</button>
+            </form>
+        </ul>
+    </div>
+    <div id="contenido">
+        <a class="abrir-cerrar" href="javascript:void(0)" onclick="mostrar()"><i style="color: black;" class="fa fa-navicon"></i></a>
+    </div>
+
+    <div>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a style="color: white;" href="{% url 'contact' %}" class="btn btn-dark">Contact</a>
+            </li>
+            <li class="nav-item">
+                <a id="today" class="nav-link disabled" href="#">{{today}}</a>
+            </li>
+        </ul>
+    </div>
+    {% endblock %}
+
+    
+    {% block body %}
+    <section id="principal-section">
+        <div>
+            <ol>
+                <div class="row">
+                {% for new in last %}
+                    <li class="col-lg-12 col-xl-4 col-sm-12 col-md-12" id="principal-news">
+                        <article id="principal-article">
+                            <a href="{% url 'new' new=new.title %}"><img class="img-shadow img-fluid" src="{{new.image.url}}" /></a>
+                                <div>
+                                    <p class="categ">{{new.category}}</p>
+                                    <p class="title"><a class="anchor-title" href="{% url 'new' new=new.title %}">{{new.title}}</a></p>
+                                    <p class="date">{{new.new_date}}</p>
+                                    <p class="content">{{new.description}}</p>
+                                    <p class="city">{{new.city}}</p>
+                                </div>
+                        </article>
+                    </li>
+                {% endfor %}
+                {% for new in second %}
+                    <li class="col-lg-12 col-xl-4 col-sm-12 col-md-12">
+                        <article class="secondary-article">
+                            <a href="{% url 'new' new=new.title %}"><img class="img-shadow secondary-img img-fluid" src="{{new.image.url}}" /></a>
+                            <div>
+                                <p class="categ">{{new.category}}</p>
+                                <p class="title"><a class="anchor-title" href="{% url 'new' new=new.title %}">{{new.title}}</a></p>
+                                <p class="date">{{new.new_date}}</p>
+                                <p class="content">{{new.description}}</p>
+                                <p class="city">{{new.city}}</p>
+                            </div>
+                        </article>
+                    </li>
+                {% endfor %}
+                <hr class="hr" style="border: 1px solid black">
+                </div>
+            </ol>
+        </div>
+    </section>
+
+    <section id="secundary-section">
+        <div>
+            <p style="font-size: 20px;"><strong>World</strong></p>
+            <ol>
+                <div class="row">
+                    {% for new in opinion %}
+                        <li class="col-xs-12 col-lg-3 secondary-news" style="margin-right: 66px;">
+                            <article class="secondary-article">
+                                <a href="{% url 'new' new=new.title %}"><img class="img-shadow secondary-img img-responsive" style="margin-bottom: 20px;" src="{{new.image.url}}" /></a>
+                                <div>
+                                    <h2 class="title"><a class="anchor-title" href="{% url 'new' new=new.title %}">{{new.title}}</a></h2>
+                                    <p class="date">{{new.new_date}}</p>
+                                    <p class="content">{{new.description}}</p>
+                                    <p class="city">{{new.city}}</p>
+                                </div>
+                            </article>
+                        </li>
+                    {% endfor %}
+                </div>
+            </ol>
+        </div>
+    </section>
+
+    <section id="section-bottom">
+        <ul id="nav-search" class="nav nav-tabs">
+            <li class="nav-item">
+            <a class="nav-link active recent">The most recent</a>
+            </li>
+        </ul>
+
+
+
+        <section class="news-bottom">
+            <div class="row">
+                {% for new in page_obj %}
+                <div  class="col-lg-12">
+                        <div class="last-news" style="float: left;">
+                            <p class="categ">{{new.category}}</p>
+                            <a class="anchor-title" href="{% url 'new' new=new.title %}"><p class="title"><strong>{{new.title}}</strong></p></a>
+                            <p class="content">{{new.description}}</p>
+                            <p class="date">{{new.new_date}}</p>
+
+                        </div>
+                        <div>
+                            <a href="{% url 'new' new=new.title %}"><img style="float:right; width:40%; height: 40%;" class="img-shadow img-fluid" src="{{new.image.url}}" /></a>
+                        </div>
+                </div>
+                <hr class="hr">
+                {% endfor %}
+            </div>
+        </section>
+    </section>
+
+    <footer class="fixed-bottom">
+        <nav class="navbar navbar-expand-sm bg-light justify-content-center">
+            <a class="btn" href="{% url 'news' %}">All News</a>
+
+        </nav>
+    </footer>
+
+    <script>
+        function mostrar() {
+            document.getElementById("sidebar").style.width = "300px";
+            document.getElementById("abrir").style.display = "none";
+        }
+
+        function ocultar() {
+            document.getElementById("sidebar").style.width = "0";
+            document.getElementById("contenido").style.marginLeft = "0";
+            document.getElementById("abrir").style.display = "inline";
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'news/layout.html' %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        {% for new in required_new %}
+        <section style="margin-left: 2%; margin-right: 2%;">
+            <div style="width: 80%;">
+                <p class="category-page">{{new.category}}</p>
+                <p class="title-page"><strong>{{new.title}}</strong></p>
+                <p class="description-page">{{new.description}}</p>
+            </div>
+            <div style="width: 100%;">
+                <img class="img-fluid" src="{{new.image.url}}" />
+                <p class="city">{{new.city}}</p>
+            </div>
+            <div style="width: 80%;">
+                <p class="page-content">{{new.content|linebreaksbr}}</p>
+                <p class="date">{{new.new_date}}</p>
+            </div>
+        </section>
+        {% endfor %}
+    </div>
+<div>
+    <hr style="border: solid black 1px; margin-right: 18%;">
+    {% for new in related_new %}
+    <div style="width: 80%; text-align: center;">
+        <a class="anchor-title" href="{% url 'new' new=new.title %}"><p class="title-two"><strong>{{new.title}}</strong></p></a>
+        <p style="font-size: 16px; color:#636363;">{{new.new_date}}</p>
+        <hr class="hr" style="width: 700px;">
+    </div>
+    {% endfor %}
+
+
+{% endblock %}

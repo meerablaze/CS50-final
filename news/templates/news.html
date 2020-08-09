@@ -1,0 +1,50 @@
+{% extends 'news/layout.html' %}
+
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        {% for new in page_obj %}
+        <div style="width: 60%; margin-left: 20%">
+            <p class="category-page">{{new.category}}</p>
+            <p class="title-page"><strong>{{new.title}}</strong></p>
+            <p class="description-page">{{new.description}}</p>
+        </div>
+        <div style="width: 100%; margin-left:16%;">
+            <img class="img-fluid">{{new.image.url}}</>
+            <p class="city">{{new.city}}</p>
+        </div>
+        <div style="width: 60%; margin-left: 20%">
+            <p class="page-content">{{new.content|linebreaksbr}}</p>
+            <p class="date">{{new.new_date}}</p>
+        </div>
+        <hr class="hr">
+        {% endfor %}
+    </div>
+<div>
+
+<div class="container">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <li class="page-item"><a href="?page=1" class="page-link">&laquo; First</a></li>
+            <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link">Previous</a></li>
+        {% else %}
+        <li class="page-item disabled"><a class="page-link">&laquo; First</a></li>
+        <li class="page-item disabled"><a class="page-link">Previous</a></li>
+        {% endif %}
+
+
+
+            <li class="page-item"><a class="page-link">{{ page_obj.number }}</a></li>
+
+
+        {% if page_obj.has_next %}
+        <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link">Next</a></li>
+        <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">Last &raquo;</a></li>
+        {% else %}
+        <li class="page-item disabled"><a class="page-link">Next</a></li>
+        <li class="page-item disabled"><a class="page-link">Last &raquo;</a></li>
+        {% endif %}
+    </ul>
+</div>
+{% endblock %}
